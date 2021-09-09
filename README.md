@@ -1,2 +1,8 @@
 # study-every-day
-天天学习
+##### 好好学习
+
+1. [LeetCode 部分](www.baidu.com)
+2. 
+
+
+
