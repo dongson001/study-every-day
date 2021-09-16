@@ -14,9 +14,9 @@ var search = function (nums, target) {
     let m = left + (right - left) / 2
     console.log(left,m,right);
     if (nums[m] > target) {
-      right = m - 1 // target 在左区间，所以[middle - 1, right]
+      right = m - 1 // target 在左区间，所以[left, m-1]
     } else if (nums[m] < target) {
-      left = m + 1 // target 在右区间，所以[ middle + 1, left]
+      left = m + 1 // target 在右区间，所以[ m+1, right]
     } else {
       return m // 数组中找到目标值，直接返回下标
     }
