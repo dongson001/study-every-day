@@ -12,7 +12,7 @@ var search = function (nums, target) {
   let right = nums.length - 1
   while (left <= right) {
     let m = left + (right - left) / 2
-    console.log(left,m,right);
+    console.log(left, m, right)
     if (nums[m] > target) {
       right = m - 1 // target 在左区间，所以[left, m-1]
     } else if (nums[m] < target) {
@@ -35,8 +35,8 @@ console.log(res)
 // nums[1] > 3
 // nums[1] < 3
 // 1+1
-//    2 + (2-2)/2 
-// 2      2         2         
+//    2 + (2-2)/2
+// 2      2         2
 // nums[2] > 3
 // nums[2] < 3
 // else // 既不大于也不等于走else
