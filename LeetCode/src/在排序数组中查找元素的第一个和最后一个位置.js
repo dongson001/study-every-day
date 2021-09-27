@@ -13,6 +13,15 @@
 var searchRange = function (nums, target) {
   let left = 0;
   let right = nums.length - 1;
+  let start = -1
+  let end = -1
+  while(left==right) {
+    let m = left + (right - left) / 2
+    if(nums[m] > target){
+      
+    }
+  }
+  return [start, end];
 }
 
 let res = searchRange([5, 7, 7, 8, 8, 10], 8)
