@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <button @click="addCourse">新增课程</button>
+      <!-- 条件渲染 -->
+      <p v-if="courses.length ===0"></p>
+      <!-- 列表渲染 -->
+      <ul>
+        <li
+          v-for="c in courses"
+          :key="c"
+          :class="{active: selectedCourse === c}"
+          @click="selectedCourse = c"
+        >
+          {{c}}
+        </li>
+      </ul>
+    </div>
+  </body>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          courses: [],
+          selectedCourse: '',
+        };
+      },
+      created() {
+        setTimeout(() => {
+          this.courses = ['全栈', 'web高级'];
+        }, 1000);
+      },
+      methods: {
+        addCourse() {
+          this.courses.push('ddd');
+        },
+      },
+    }).mount('#app');
+  </script>
+  <style>
+    .active {
+      background: red;
+    }
+  </style>
+</html>

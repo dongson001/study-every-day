@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- 动态样式 -->
+      <h1 :class="{active: isActive}">动态样式</h1>
+      <p :style="{color:activeColor,fontSize:activeFontSize+'px'}">
+        bla bala........
+      </p>
+    </div>
+  </body>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          isActive: true,
+          activeColor: 'red',
+          activeFontSize: 30,
+        };
+      },
+    }).mount('#app');
+    setTimeout(() => {
+      app.isActive = false;
+      app.activeFontSize = 60;
+    }, 2000);
+  </script>
+  <style>
+    .active {
+      background: red;
+    }
+  </style>
+</html>
