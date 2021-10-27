@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <com @some-event="onSomeEvent" :title="title"></com>
+      <com2></com2>
+    </div>
+  </body>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          title: 'vue3组件化',
+        };
+      },
+      // 局部注册
+      components: {
+        com2: {
+          template: '<div>com2</div>',
+        },
+      },
+      methods: {
+        onSomeEvent(msg) {
+          console.log('收到com摸个事件' + msg);
+        },
+      },
+    });
+    // 全局注册
+    app.component('com', {
+      template: "<div @click=\"$emit('some-event','com')\">com,{{title}}</div>",
+      props: ['title'],
+      emits: ['some-event'],
+    });
+    app.mount('#app');
+  </script>
+</html>
