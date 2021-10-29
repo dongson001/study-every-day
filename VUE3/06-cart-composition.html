@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .message-box {
+        padding: 10px 20px;
+        background: #4fc08d;
+        border: 1px solid #42b983;
+        color: #fff;
+      }
+      .message-box-close {
+        float: right;
+        cursor: pointer;
+      }
+    </style>
+    <script type="text/x-template" id="message">
+      <div class="message-box">
+        <h3>
+          <!-- 具名插槽 -->
+          <slot name="title"></slot>
+          <span class="message-box-close" @click="$emit('close')">X</span>
+          <!-- 匿名插槽 -->
+          <slot></slot>
+        </h3>
+      </div>
+    </script>
+    <script>
+      const Message = {
+        template: '#message',
+        emits: ['close'],
+      };
+    </script>
+    <script type="text/x-template" id="courses-add">
+      <!-- <input type="text" v-model="course" @keydown.enter="addCourse" /> -->
+      <input type="text" :value="course" @input="$emit('update:course',$event.target.value)" @keydown.enter="addCourse" />
+      <button @click="addCourse">新增课程</button>
+    </script>
+    <script>
+      const CoursesAdd = {
+        template: '#courses-add',
+        props: {
+          course: {
+            type: String,
+            required: true,
+          },
+        },
+        emits: ['update:course', 'add'],
+        data() {
+          return {
+            // course: '',
+          };
+        },
+        // emits: [],
+        methods: {
+          addCourse() {
+            this.$emit('add');
+            // this.course = '';
+          },
+        },
+      };
+    </script>
+    <script type="text/x-template" id="courses-list">
+      <!-- 条件渲染 -->
+      <p v-if="courses.length ===0"></p>
+      <!-- 列表渲染 -->
+      <ul>
+        <li
+          v-for="c in courses"
+          :key="c"
+          :class="{active: selectedCourse === c}"
+          @click="selectedCourse = c"
+        >
+          {{c}}
+        </li>
+      </ul>
+    </script>
+    <script>
+      const CoursesList = {
+        template: '#courses-list',
+        data() {
+          return {
+            selectedCourse: '',
+          };
+        },
+        props: {
+          courses: {
+            type: Array,
+            required: true,
+          },
+        },
+      };
+    </script>
+    <div id="app">
+      <!-- 消息提示框 -->
+      <message v-if="showMsg" @close="showMsg=false">
+        <template v-slot:title> 恭喜 </template>
+        新增课程成功
+      </message>
+      <courses-add v-model:course="course" @add="addCourse"></courses-add>
+      <courses-list :courses="courses"></courses-list>
+      <!-- 计算属性 课程总数 -->
+      <p>{{`课程总数:`+ courseCount}}</p>
+    </div>
+  </body>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    const { reactive, ref, computed, toRefs, watch } = Vue;
+    const app = Vue.createApp({
+      setup(props) {
+        const state = reactive({
+          courses: JSON.parse(localStorage.getItem('courses')) || [],
+          course: '',
+          // 计算属性
+          courseCount: computed(() => state.courses.length + '门'),
+        });
+
+        const showMsg = ref(false);
+        setTimeout(() => {
+          state.courses = ['全栈', 'web高级'];
+        }, 1000);
+        watch(
+          () => state.courses,
+          () => {
+            localStorage.setItem('courses', JSON.stringify(state.courses));
+          },
+          {
+            // 对象属性
+            deep: true,
+          }
+        );
+        function addCourse() {
+          state.courses.push(state.course);
+          state.course = '';
+          showMsg.value = true;
+        }
+
+        return { ...toRefs(state), addCourse, showMsg };
+      },
+      // data() {
+      //   return {
+      //     courses: [],
+      //     course: '',
+      //     showMsg: false,
+      //   };
+      // },
+      // created() {
+      //   setTimeout(() => {
+      //     this.courses = ['全栈', 'web高级'];
+      //   }, 1000);
+      // },
+      components: {
+        'courses-add': CoursesAdd,
+      },
+      // methods: {
+      //   addCourse() {
+      //     this.courses.push(this.course);
+      //     this.course = '';
+      //     this.showMsg = true;
+      //   },
+      // },
+    })
+      .component('courses-list', CoursesList)
+      .component('message', Message)
+      .mount('#app');
+  </script>
+  <style>
+    .active {
+      background: red;
+    }
+  </style>
+</html>

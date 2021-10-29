@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      {{counter}}
+      <p>{{count}}</p>
+      <Com dong="dong" tua="tua">Some Com</Com>
+    </div>
+  </body>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    const {
+      createApp,
+      reactive,
+      h,
+      getCurrentInstance,
+      ref,
+      toRefs,
+      watchEffect,
+      watch,
+    } = Vue;
+    const vm = createApp({
+      setup(props, ctx) {
+        // 获取组件上下文
+        const ins = getCurrentInstance();
+        console.log(ins);
+
+        // 单值响应式
+        const count = ref(0);
+        console.log(count.value);
+        count.value++;
+        console.log(count.value);
+
+        const state = reactive({
+          counter: 0,
+          count,
+        });
+
+        setInterval(() => {
+          state.counter++;
+          count.value++;
+        }, 1000);
+        // watchEffect: 监控副作用
+        watchEffect(() => {
+          console.log('counter发生了变化' + count.value);
+        });
+
+        // watch
+        // 监听对象是reactive的时候写一个函数
+        watch(
+          () => state.counter,
+          (counter, prevCounter) => {
+            console.log('counter变化了' + counter);
+          }
+        );
+        // 监听对象是ref的时候直接写名称
+        watch(count, (count, prevCounter) => {
+          console.log('count变化了' + count);
+        });
+
+        // 方式1 render函数上下文对象
+        return {
+          ...toRefs(state),
+        };
+
+        // 方式2 返回一个渲染函数，这里还可以是jsx
+
+        // return () => h('div', state.counter);
+      },
+      components: {
+        Com: {
+          template: `<div>Com<slot/></div>`,
+          props: {
+            dong: {
+              type: String,
+              default: '',
+            },
+          },
+          setup(props, { attr, emit, slot, expose }) {
+            console.log(props.dong, attr, emit, slot, expose);
+          },
+        },
+      },
+    }).mount('#app');
+    // 方式1
+    // setInterval(() => {
+    //   vm.state.counter++;
+    //   vm.count++;
+    // }, 1000);
+  </script>
+</html>
