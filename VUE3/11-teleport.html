@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .modal {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        width: 300px;
+        height: 300px;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      {{foo}}
+      <modal-button> 弹窗内容 </modal-button>
+    </div>
+    <script type="text/x-template" id="modalButton">
+      <button @click="modalOpen= true">打开弹窗</button>
+      <teleport to="body">
+        <div v-if="modalOpen" class="modal">
+          <div>
+            <slot/>
+            <button @click="modalOpen= false">关闭弹窗</button>
+          </div>
+        </div>
+      </teleport>
+    </script>
+    <script>
+      const ModalButton = {
+        template: '#modalButton',
+        data() {
+          return {
+            modalOpen: false,
+          };
+        },
+      };
+    </script>
+  </body>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    const { createApp } = Vue;
+    const vm = createApp({
+      components: {
+        ModalButton,
+      },
+      data() {
+        return {
+          foo: 'teleport',
+        };
+      },
+      created() {
+        console.log('hello from app');
+      },
+    }).mount('#app');
+  </script>
+</html>

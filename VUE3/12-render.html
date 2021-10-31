@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      {{foo}}
+      <x-heading :level="1" :item="item">渲染函数的使用</x-heading>
+    </div>
+  </body>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    const { createApp, h } = Vue;
+    const vm = createApp({
+      data() {
+        return {
+          foo: '渲染函数',
+          item: ['a', 'b', 'c'],
+        };
+      },
+      created() {
+        console.log('hello from app');
+      },
+    })
+      .component('x-heading', {
+        props: {
+          level: {
+            type: Number,
+            required: true,
+          },
+          item: {
+            type: Array,
+            required: true,
+          },
+        },
+        render() {
+          // 与vue2比不在接收一个h函数
+          // 参数1标签名称
+          // 参数2若干属性和事件
+          // 参数3子元素
+
+          // 条件和循环
+          if (this.items?.length) {
+            const children = this.items.map((item) => h('li', {}, item));
+            return h('ul', children);
+          } else {
+            return h('h' + this.level, {}, this.$slots.default());
+          }
+        },
+      })
+      .mount('#app');
+  </script>
+</html>
