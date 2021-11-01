@@ -9,7 +9,7 @@
   <body>
     <div id="app">
       {{foo}}
-      <x-heading :level="1" :item="item">渲染函数的使用</x-heading>
+      <x-heading :level="1" :items="items">渲染函数的使用</x-heading>
     </div>
   </body>
   <script src="https://unpkg.com/vue@next"></script>
@@ -19,7 +19,7 @@
       data() {
         return {
           foo: '渲染函数',
-          item: ['a', 'b', 'c'],
+          items: ['a', 'b', 'c'],
         };
       },
       created() {
@@ -32,7 +32,7 @@
             type: Number,
             required: true,
           },
-          item: {
+          items: {
             type: Array,
             required: true,
           },
@@ -43,8 +43,15 @@
           // 参数2若干属性和事件
           // 参数3子元素
 
+          return h(KInput, {
+            onClick: ($event) => console.log($event.target),
+            modelValue: this.modelValue,
+            'onUpdate:modelValue': (value) =>
+              this.emit('onUpdate:modelValue', value),
+          });
+
           // 条件和循环
-          if (this.items?.length) {
+          if (this.items.length) {
             const children = this.items.map((item) => h('li', {}, item));
             return h('ul', children);
           } else {
