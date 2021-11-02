@@ -1,11 +1,13 @@
 <template>
-  <input
-    type="text"
-    :value="course"
-    @input="$emit('update:course', $event.target.value)"
-    @keydown.enter="addCourse"
-  />
-  <button @click="addCourse">新增课程</button>
+  <div>
+    <input
+      type="text"
+      :value="course"
+      @input="$emit('update:course', $event.target.value)"
+      @keydown.enter="addCourse"
+    />
+    <button @click="addCourse">新增课程</button>
+  </div>
 </template>
 
 <script>
@@ -16,7 +18,7 @@ export default {
       required: true,
     },
   },
-  emits: ['update:course', 'add'],
+  emits: ["update:course", "add"],
   data() {
     return {
       // course: '',
@@ -25,7 +27,7 @@ export default {
   // emits: [],
   methods: {
     addCourse() {
-      this.$emit('add');
+      this.$emit("add");
       // this.course = '';
     },
   },

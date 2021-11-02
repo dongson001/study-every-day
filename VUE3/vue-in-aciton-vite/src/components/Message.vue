@@ -1,9 +1,9 @@
 <template>
-  <div class="message-box">
+  <div :class="$style.messageBox">
     <h3>
       <!-- 具名插槽 -->
       <slot name="title"></slot>
-      <span class="message-box-close" @click="$emit('close')">X</span>
+      <span :class="$style.messageBoxClose" @click="$emit('close')">X</span>
       <!-- 匿名插槽 -->
       <slot></slot>
     </h3>
@@ -17,7 +17,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style module>
 .message-box {
   padding: 10px 20px;
   background: #4fc08d;
