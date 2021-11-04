@@ -1,5 +1,8 @@
 const path = require("path");
 module.exports = {
+  server: {
+    port: 8888,
+  },
   alias: {
     "/coms/": path.resolve(__dirname, "src/components"),
   },
