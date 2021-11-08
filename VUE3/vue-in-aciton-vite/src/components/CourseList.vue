@@ -19,6 +19,7 @@
       </router-link>
     </li>
   </ul>
+  <router-view />
 </template>
 
 <script>

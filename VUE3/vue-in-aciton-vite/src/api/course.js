@@ -16,7 +16,10 @@ export function getCourses() {
 }
 
 export function addCourse(c) {
-  courses.push(c);
+  courses.push({
+    name: c,
+    id: courses.length + 1,
+  });
   return Promise.resolve(courses);
 }
 

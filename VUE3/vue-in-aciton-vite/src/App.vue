@@ -13,54 +13,53 @@
   <!-- 计算属性 课程总数 -->
   <!-- <p>{{ `课程总数:` + courseCount }}</p> -->
   <!-- 路由出口 -->
-  <router-view></router-view>
+  <div>123</div>
+  <router-view />
 </template>
 
 <script>
-import { reactive, ref, computed, toRefs, watch } from "vue";
-import CoursesAdd from "/coms/CoursesAdd.vue";
-import CoursesList from "/coms/CoursesList.vue";
-import Message from "/coms/Message.vue";
+// import { reactive, ref, computed, toRefs, watch } from "vue";
+// import CoursesAdd from "/coms/CoursesAdd.vue";
+// import CoursesList from "/coms/CoursesList.vue";
+// import Message from "/coms/Message.vue";
 export default {
   components: {
-    CoursesAdd,
-    CoursesList,
-    Message,
+    // CoursesAdd,
+    // CoursesList,
+    // Message,
   },
   setup() {
-    const state = reactive({
-      courses: JSON.parse(localStorage.getItem("courses")) || [],
-      course: "",
-      // 计算属性
-      courseCount: computed(() => state.courses.length + "门"),
-    });
-
-    const showMsg = ref(false);
-    setTimeout(() => {
-      state.courses = ["全栈", "web高级"];
-    }, 1000);
-    watch(
-      () => state.courses,
-      () => {
-        localStorage.setItem("courses", JSON.stringify(state.courses));
-      },
-      {
-        // 对象属性
-        deep: true,
-      }
-    );
-    function addCourse() {
-      state.courses.push(state.course);
-      state.course = "";
-      showMsg.value = true;
-    }
-
-    return { ...toRefs(state), addCourse, showMsg };
+    // const state = reactive({
+    //   courses: JSON.parse(localStorage.getItem("courses")) || [],
+    //   course: "",
+    //   // 计算属性
+    //   courseCount: computed(() => state.courses.length + "门"),
+    // });
+    // const showMsg = ref(false);
+    // setTimeout(() => {
+    //   state.courses = ["全栈", "web高级"];
+    // }, 1000);
+    // watch(
+    //   () => state.courses,
+    //   () => {
+    //     localStorage.setItem("courses", JSON.stringify(state.courses));
+    //   },
+    //   {
+    //     // 对象属性
+    //     deep: true,
+    //   }
+    // );
+    // function addCourse() {
+    //   state.courses.push(state.course);
+    //   state.course = "";
+    //   showMsg.value = true;
+    // }
+    // return { ...toRefs(state), addCourse, showMsg };
   },
 };
 </script>
 <style>
-#app {
-  /* background: url('./assets/logo.png'); */
-}
+/* #app {
+  background: url('./assets/logo.png');
+} */
 </style>
