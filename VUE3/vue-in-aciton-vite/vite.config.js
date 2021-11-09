@@ -4,7 +4,7 @@ const path = require("path");
 console.log(path.resolve(__dirname, "./src"));
 module.exports = {
   plugins: [vue()],
-  "resolve.alias": {
+  alias: {
     // 键必须以斜线开始和结束
     "/@/": path.resolve(__dirname, "./src"),
     "/coms/": path.resolve(__dirname, "src/components"),

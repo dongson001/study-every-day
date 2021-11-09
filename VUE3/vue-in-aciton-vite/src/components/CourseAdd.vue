@@ -35,7 +35,7 @@ export default {
     const add = () => {
       addCourse(course.value).then(() => {
         course.value = "";
-        reouter.push("/");
+        reouter.push({ path: "/", query: { action: "success" } });
       });
     };
     return {

@@ -13,8 +13,13 @@
   <!-- 计算属性 课程总数 -->
   <!-- <p>{{ `课程总数:` + courseCount }}</p> -->
   <!-- 路由出口 -->
-  <div>123</div>
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <keep-alive>
+      <transition name="fede">
+        <component :is="Component"></component>
+      </transition>
+    </keep-alive>
+  </router-view>
 </template>
 
 <script>
@@ -62,4 +67,12 @@ export default {
 /* #app {
   background: url('./assets/logo.png');
 } */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>
