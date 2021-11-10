@@ -41,29 +41,30 @@ const routes = [
   {
     path: "/course",
     component: CourseList,
+    name: "list",
     children: [
-      {
-        path: "/CourseAdd",
-        name: "add",
-        component: CourseAdd,
-        meta: { requiresAuth: true },
-        // beforeEnter: (to, from, next) => {
-        //   if (to.name === "add") {
-        //     if (localStorage.getItem("token")) {
-        //       next();
-        //     } else {
-        //       next({
-        //         path: "/login",
-        //         query: {
-        //           redirect: to.path,
-        //         },
-        //       });
-        //     }
-        //   } else {
-        //     next();
-        //   }
-        // },
-      },
+      // {
+      //   path: "/CourseAdd",
+      //   name: "add",
+      //   component: CourseAdd,
+      //   meta: { requiresAuth: true },
+      //   // beforeEnter: (to, from, next) => {
+      //   //   if (to.name === "add") {
+      //   //     if (localStorage.getItem("token")) {
+      //   //       next();
+      //   //     } else {
+      //   //       next({
+      //   //         path: "/login",
+      //   //         query: {
+      //   //           redirect: to.path,
+      //   //         },
+      //   //       });
+      //   //     }
+      //   //   } else {
+      //   //     next();
+      //   //   }
+      //   // },
+      // },
       {
         path: "/Course/:id",
         name: "detail",
@@ -73,16 +74,42 @@ const routes = [
   },
 ];
 
+const authRoutes = [
+  {
+    path: "/CourseAdd",
+    name: "add",
+    component: CourseAdd,
+    parent: "list",
+  },
+];
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
 
-//全局守卫
+//是否添加路由权限
+let hashAuth = false;
+
+const whitelist = ["/login"];
 router.beforeEach((to, from, next) => {
-  // if (to.name === "add") {
-  if (to.meta.requiresAuth) {
-    if (localStorage.getItem("token")) {
+  if (localStorage.getItem("token")) {
+    if (hashAuth) {
+      next();
+    } else {
+      // 动态添加路由
+      hashAuth = true;
+      authRoutes.forEach(route => {
+        if (route.parent) {
+          router.addRoute(route.parent, route);
+        } else {
+          router.addRoute(route);
+        }
+      });
+      next({ ...to, replace: true });
+    }
+  } else {
+    if (whitelist.includes(to.path)) {
       next();
     } else {
       next({
@@ -92,10 +119,27 @@ router.beforeEach((to, from, next) => {
         },
       });
     }
-  } else {
-    next();
   }
 });
+
+//全局守卫
+// router.beforeEach((to, from, next) => {
+//   // if (to.name === "add") {
+//   if (to.meta.requiresAuth) {
+//     if (localStorage.getItem("token")) {
+//       next();
+//     } else {
+//       next({
+//         path: "/login",
+//         query: {
+//           redirect: to.path,
+//         },
+//       });
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 // 创建实例
 export default router;
